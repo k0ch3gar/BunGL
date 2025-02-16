@@ -28,13 +28,28 @@ public:
 
     bool ShouldClose = false;
 
+    int GetWidth() const { return _width; }
+
+    int GetHeight() const { return _height; }
+
     void SetNewWindowSize(int width, int height);
+
+    void SwitchCursorMode();
+
+    bool IsCursorVisible() const;
 
 private:
     GLFWwindow* _window = nullptr;
 
     glm::vec4 _clearColor{};
     glm::mat4 _projection{};
+
+    float _fov;
+
+    int _width;
+    int _height;
+
+    bool _cursorVisible = true;
 };
 
 

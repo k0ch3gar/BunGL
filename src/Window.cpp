@@ -8,6 +8,9 @@
 Window::Window(int width, int height, const char *title, float fov) {
     _window = glfwCreateWindow(width, height, title, nullptr, nullptr);
     _clearColor = glm::vec4(0, 0, 0, 1);
+    _width = width;
+    _height = height;
+    _fov = fov;
     _projection = glm::perspective(fov, (float)width/(float)height, 0.01f, 100.0f);
 }
 
@@ -42,7 +45,7 @@ void Window::Update() {
 }
 
 InputHandler Window::InitWindowInputHandler() {
-    return InputHandler(_window);
+    return {_window};
 }
 
 void Window::SetClearColor(float r, float g, float b, float a) {
@@ -57,5 +60,18 @@ glm::mat4 Window::GetProjectionMatrix() const {
 }
 
 void Window::SetNewWindowSize(int width, int height) {
+    _width = width;
+    _height = height;
+    if (_height < 10 || _width < 10) return;
+    _projection = glm::perspective(_fov, (float)width/(float)height, 0.01f, 100.0f);
     glViewport(0, 0, width, height);
+}
+
+void Window::SwitchCursorMode() {
+    glfwSetInputMode(_window, GLFW_CURSOR, _cursorVisible ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
+    _cursorVisible = !_cursorVisible;
+}
+
+bool Window::IsCursorVisible() const {
+    return _cursorVisible;
 }

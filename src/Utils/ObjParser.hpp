@@ -13,6 +13,8 @@ public:
     ObjParser() = default;
 
     void parseOBJFile(const std::string& filePath) {
+        _faces.clear();
+        _vertices.clear();
         std::ifstream file(filePath);
         if (!file.is_open()) {
             std::cerr << "Не удалось открыть файл: " << filePath << std::endl;

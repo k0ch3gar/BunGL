@@ -15,11 +15,17 @@ public:
 
    Movable& Move(glm::vec3 diff) override;
 
+   Movable& RotateX(float xDegree) override;
+
+   Movable& RotateY(float yDegree) override;
+
+
 private:
    glm::vec3 _up;
+   glm::vec3  _right;
    glm::vec3 _direction;
 
-   glm::mat4 _view;
+   float pitch;
 };
 
 

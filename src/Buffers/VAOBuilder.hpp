@@ -9,6 +9,11 @@ public:
         return this;
     }
 
+    VAOBuilder *WithTextures(std::vector<float>& textures) {
+        _textureBuffer = new ArrayBuffer(textures);
+        return this;
+    }
+
     VAOBuilder *WithElementBuffer(std::vector<uint32_t>& elementBuffer) {
         _elementBuffer = new ElementBuffer(elementBuffer);
         return this;
@@ -24,6 +29,7 @@ public:
 
 private:
     ArrayBuffer *_arrayBuffer = nullptr;
+    ArrayBuffer *_textureBuffer = nullptr;
     ElementBuffer *_elementBuffer = nullptr;
 };
 

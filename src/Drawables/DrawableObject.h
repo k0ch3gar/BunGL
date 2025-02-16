@@ -35,6 +35,4 @@ private:
     VertexArrayBuffer* _vertexArrayBuffer;
 };
 
-
-
 #endif //TRIANGLE_H

@@ -81,7 +81,7 @@ public:
         return _windowSize;
     }
 
-    glm::vec2 getMouseOffset() {
+    glm::vec2 getMouseOffset() const {
         return _mouseOffset;
     }
 

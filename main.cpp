@@ -27,7 +27,7 @@ int main() {
 
     window.Open();
     InputHandler handler = window.InitWindowInputHandler();
-    EventHandler eventHandler(&handler);
+    EventHandler eventHandler(&window);
 
     Renderer renderer;
     ShaderBuilder shaderBuilder;
@@ -40,16 +40,16 @@ int main() {
 
     shader.UseProgram();
     ObjParser objParser;
-    objParser.parseOBJFile(R"(C:\Users\kosti\CLionProjects\ServerOpenGLRenderer\assets\duck.obj)");
+    objParser.parseOBJFile(R"(C:\Users\kosti\CLionProjects\ServerOpenGLRenderer\assets\Glaceon.obj)");
 
     std::vector<float> bVertices = objParser.getVertices();
 
     std::vector<unsigned int> indices = objParser.getFaces();
 
     DrawableObject obj(bVertices, indices);
+
     eventHandler.SetMovable(&camera);
 
-    obj.Scale(0.01f);
     renderer.AddDrawable(&obj);
 
     while (!window.ShouldClose) {

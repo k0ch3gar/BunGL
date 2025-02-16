@@ -5,13 +5,15 @@
 
 class Movable {
 public:
+    virtual ~Movable() = default;
+
     Movable() = default;
 
-    virtual Movable& RotateX(float xRad);
+    virtual Movable& RotateX(float xDegree);
 
     virtual Movable& RotateY(float yDegree);
 
-    virtual Movable& RotateZ(float zRad);
+    virtual Movable& RotateZ(float zDegree);
 
     virtual Movable& Move(glm::vec3 diff);
 
