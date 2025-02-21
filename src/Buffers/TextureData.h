@@ -1,0 +1,4 @@
+#ifndef TEXTUREDATA_H
+#define TEXTUREDATA_H
+
+#endif //TEXTUREDATA_H

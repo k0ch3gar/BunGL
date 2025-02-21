@@ -28,15 +28,15 @@ public:
 
     bool ShouldClose = false;
 
-    int GetWidth() const { return _width; }
+    [[nodiscard]] int GetWidth() const { return _width; }
 
-    int GetHeight() const { return _height; }
+    [[nodiscard]] int GetHeight() const { return _height; }
 
     void SetNewWindowSize(int width, int height);
 
     void SwitchCursorMode();
 
-    bool IsCursorVisible() const;
+    [[nodiscard]] bool IsCursorVisible() const;
 
 private:
     GLFWwindow* _window = nullptr;

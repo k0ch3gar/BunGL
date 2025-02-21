@@ -21,9 +21,6 @@ public:
             std::cerr << "OpenGL error: " << error << std::endl;
         }
     }
-
-private:
-    uint32_t* _data;
 };
 
 

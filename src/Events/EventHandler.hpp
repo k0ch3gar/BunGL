@@ -1,7 +1,7 @@
 #ifndef EVENTHANDLER_HPP
 #define EVENTHANDLER_HPP
 
-#include <Drawables/Movable.h>
+#include <Properties/Movable.h>
 
 #include "Window.h"
 

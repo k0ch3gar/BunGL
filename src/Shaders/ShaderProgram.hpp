@@ -11,7 +11,7 @@ class ShaderProgram {
 public:
 
     explicit ShaderProgram(const GLuint shaderProgram) : _program(shaderProgram) {
-        _uniformLocations.emplace(MVP, glGetUniformLocation(_program, "mvp"));
+        _uniformLocations.emplace(MVP, glGetUniformLocation(_program, "vp"));
         _uniformLocations.emplace(CameraNormal, glGetUniformLocation(_program, "cameraNormal"));
 
     }
@@ -20,13 +20,17 @@ public:
         glUseProgram(_program);
     }
 
-    void UniformMatrix(ShaderEnum uniformType, glm::mat4 data) const {
-        const GLint glLoc = _uniformLocations.at(uniformType);
+    int GetUniform(const char* uniform) const {
+        return glGetUniformLocation(_program, uniform);
+    }
+
+    void UniformMatrix(const std::string& uniformType, glm::mat4 data) const {
+        const GLint glLoc = glGetUniformLocation(_program, uniformType.c_str());
         glUniformMatrix4fv(glLoc, 1, GL_FALSE, glm::value_ptr(data));
     }
 
-    void UniformVector(ShaderEnum uniformType, const glm::vec3& data) const {
-        const GLint glLoc = _uniformLocations.at(uniformType);
+    void UniformVector(const std::string& uniformType, const glm::vec3& data) const {
+        const GLint glLoc = glGetUniformLocation(_program, uniformType.c_str());
         glUniform3fv(glLoc, 1, glm::value_ptr(data));
     }
 

@@ -1,30 +1,33 @@
 #ifndef VAOBUILDER_HPP
 #define VAOBUILDER_HPP
-#include "VertexArrayBuffer.hpp"
+#include "VertexAttributesBuffer.hpp"
 
 class VAOBuilder {
 public:
-    VAOBuilder *WithVertices(std::vector<float>& vertices) {
+    VAOBuilder& WithVertices(std::vector<float>& vertices) {
         _arrayBuffer = new ArrayBuffer(vertices);
-        return this;
+        return *this;
     }
 
-    VAOBuilder *WithTextures(std::vector<float>& textures) {
+    VAOBuilder& WithTextures(std::vector<float>& textures) {
         _textureBuffer = new ArrayBuffer(textures);
-        return this;
+        return *this;
     }
 
-    VAOBuilder *WithElementBuffer(std::vector<uint32_t>& elementBuffer) {
+    VAOBuilder& WithElementBuffer(std::vector<uint32_t>& elementBuffer) {
         _elementBuffer = new ElementBuffer(elementBuffer);
-        return this;
+        return *this;
     }
 
-    VertexArrayBuffer Build() {
+    VertexAttributesBuffer Build() {
         if (_arrayBuffer == nullptr ||
             _elementBuffer == nullptr)
             throw std::invalid_argument("VAO Buffer or ElementBuffer is null");
 
-        return {_arrayBuffer, _elementBuffer};
+        VertexAttributesBuffer VAO;
+        VAO.AddAttribute(0, _arrayBuffer, 3).AddElementBuffer(_elementBuffer);
+
+        return VAO;
     }
 
 private:

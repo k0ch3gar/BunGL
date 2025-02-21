@@ -7,10 +7,11 @@
 #include "ArrayBuffer.hpp"
 #include "ElementBuffer.hpp"
 
-class VertexArrayBuffer {
+class VertexAttributesBuffer {
     uint32_t _vao{};
     ArrayBuffer* _arrayBuffer;
     ElementBuffer* _elementBuffer;
+    size_t _elementsCount = 0;
 
 
     void Bind() {
@@ -23,38 +24,45 @@ class VertexArrayBuffer {
 
 public:
 
-    VertexArrayBuffer(ArrayBuffer* arrayBuffer, ElementBuffer* elementBuffer) {
-        _arrayBuffer = arrayBuffer;
-        _elementBuffer = elementBuffer;
-
+    VertexAttributesBuffer() {
         glad_glGenVertexArrays(1, &_vao);
+    }
 
+    VertexAttributesBuffer& AddAttribute(int attributeIndex, ArrayBuffer* arrayBuffer, int size) {
         Bind();
-
-        _arrayBuffer->Bind();
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), nullptr);
-        glEnableVertexAttribArray(0);
+        arrayBuffer->Bind();
+        glVertexAttribPointer(attributeIndex, size, GL_FLOAT, GL_FALSE, size * sizeof(float), nullptr);
+        glEnableVertexAttribArray(attributeIndex);
         GLenum error = glGetError();
         if (error != GL_NO_ERROR) {
-            std::cerr << "OpenGL error: " << error << std::endl;
+            throw std::runtime_error("Vertex attribute array buffer adding failed");
         }
 
-        _elementBuffer->Bind();
         Unbind();
+        arrayBuffer->Unbind();
 
-        _arrayBuffer->Unbind();
-        _elementBuffer->Unbind();
-        error = glGetError();
+        return *this;
+    }
+
+    VertexAttributesBuffer& AddElementBuffer(ElementBuffer* elementBuffer) {
+        Bind();
+        elementBuffer->Bind();
+        GLenum error = glGetError();
         if (error != GL_NO_ERROR) {
-            std::cerr << "OpenGL error: " << error << std::endl;
+            throw std::runtime_error("Vertex attribute array buffer adding failed");
         }
+
+        _elementsCount = elementBuffer->Size();
+        Unbind();
+        elementBuffer->Unbind();
+        return *this;
     }
 
     void DrawTriangles() {
         Bind();
         glDrawElements(
                 GL_TRIANGLES,
-             _elementBuffer->Size(),
+             static_cast<int>(_elementsCount),
             GL_UNSIGNED_INT,
             nullptr);
         Unbind();

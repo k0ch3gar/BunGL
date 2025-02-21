@@ -10,7 +10,7 @@
 
 
 void DrawableObject::Draw() {
-    _vertexArrayBuffer->DrawTriangles();
+    _vertexArrayBuffer.DrawTriangles();
     auto error = glGetError();
     if (error != GL_NO_ERROR) {
         std::cerr << "OpenGL error: " << error << std::endl;

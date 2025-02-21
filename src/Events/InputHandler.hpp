@@ -38,6 +38,7 @@ public:
     }
 
     void update() {
+        glfwPollEvents();
         _mouseOffset = _mousePos - _lastMousePos;
         _lastMousePos = _mousePos;
 

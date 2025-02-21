@@ -30,6 +30,18 @@ public:
         glBindBuffer(BufferType, _buffer);
     }
 
+    void BindBufferLayout(int layout) {
+        Bind();
+        glBindBufferBase(BufferType, layout, _buffer);
+        Unbind();
+    }
+
+    void ChangeBufferElement(T data, size_t offset) {
+        Bind();
+        glBufferSubData(BufferType, offset * sizeof(T), sizeof(T), &data);
+        Unbind();
+    }
+
     void Unbind() {
         glBindBuffer(BufferType, 0);
     }

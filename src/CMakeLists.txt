@@ -4,10 +4,16 @@ file(GLOB bunGL_src CONFIGURE_DEPENDS
 )
 
 add_library(bunGL ${bunGL_src}
-        Utils/FileUtils.h
-        Utils/FileUtils.h
-        Shaders/ShaderBuilder.hpp
-        Utils/ObjParser.hpp)
+        Buffers/VertexAttributesBuffer.hpp
+        Buffers/VAOBuilder.hpp
+        Scene/Scene.cpp
+        Scene/Scene.h
+        Buffers/ShaderStorageBuffer.hpp
+        Buffers/TextureBuffer.hpp
+        Buffers/TextureData.h
+        Properties/Illuminant.cpp
+        Properties/Illuminant.h
+        IUpdate.h)
 
 target_include_directories(bunGL
         PRIVATE .

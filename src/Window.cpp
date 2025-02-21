@@ -29,17 +29,6 @@ void Window::ClearScreen() const {
 }
 
 void Window::Update() {
-    glfwPollEvents();
-    GLenum error = glGetError();
-    if (error != GL_NO_ERROR) {
-        std::cerr << "OpenGL error: " << error << std::endl;
-    }
-
-    error = glGetError();
-    if (error != GL_NO_ERROR) {
-        std::cerr << "OpenGL error: " << error << std::endl;
-    }
-
     glfwSwapBuffers(_window);
     if (glfwWindowShouldClose(_window)) ShouldClose = true;
 }

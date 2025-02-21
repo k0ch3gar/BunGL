@@ -1,6 +1,6 @@
 #ifndef CAMERA_H
 #define CAMERA_H
-#include "Drawables/Movable.h"
+#include "Properties/Movable.h"
 #include "glm/glm.hpp"
 
 class Camera : public Movable {
