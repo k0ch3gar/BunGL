@@ -2,10 +2,12 @@
 #define SCENE_H
 #include <vector>
 #include <Drawables/IDrawable.h>
+
+#include "Updatable.h"
 #include "Properties/Movable.h"
 
 
-class Scene : public IDrawable {
+class Scene : public IDrawable, public Updatable {
 public:
     Scene() = default;
 
@@ -14,6 +16,8 @@ public:
     size_t AddMovable(Movable* movable);
 
     void Draw() override;
+
+    void Update(double delta) override;
 
 private:
     std::vector<IDrawable *> _drawables;

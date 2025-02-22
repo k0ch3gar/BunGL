@@ -3,10 +3,10 @@
 
 class Illuminant {
 public:
-
-
+    void Illuminate();
 
 private:
+
 };
 
 

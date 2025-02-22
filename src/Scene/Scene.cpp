@@ -5,3 +5,7 @@ void Scene::Draw() {
         drawable->Draw();
     }
 }
+
+void Scene::Update(double delta) {
+
+}

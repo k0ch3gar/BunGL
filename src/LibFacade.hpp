@@ -1,6 +1,7 @@
 #ifndef LIBFACADE_HPP
 #define LIBFACADE_HPP
 
+#include <Camera.h>
 #include <fstream>
 #include <iostream>
 #include <glad/glad.h>
@@ -37,6 +38,21 @@ void parseData(const char* pathToFile, std::vector<T>& vec) {
     T num;
     while (file >> num) {
         vec.emplace_back(num);
+    }
+}
+
+namespace bunGL {
+    inline Window* window = nullptr;
+
+    void InitWindow(int width, int height, const char *title, float fov) {
+        window = new Window(width, height, title, fov);
+    }
+
+    void RegisterBasicCamera() {
+    }
+
+    void RegisterObject() {
+
     }
 }
 

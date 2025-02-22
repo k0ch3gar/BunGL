@@ -21,17 +21,14 @@ using namespace glm;
 int main() {
     InitLib();
 
-    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
-
     auto window = Window(800, 600, "title", 70.0f);
     auto camera = Camera(glm::vec3(0.0f, 0.1f, 1.0f));
     window.SetClearColor(0.4, 0.4, 0.4, 1);
 
     window.Open();
     InputHandler handler = window.InitWindowInputHandler();
-    EventHandler eventHandler(&window);
+    EventHandler eventHandler;
 
-    Renderer renderer;
     ShaderBuilder shaderBuilder;
     ShaderProgram shader =
         shaderBuilder
@@ -43,7 +40,7 @@ int main() {
     shader.UseProgram();
 
     ObjParser objParser;
-    objParser.parseOBJFile(R"(C:\Users\kosti\CLionProjects\ServerOpenGLRenderer\assets\Glaceon.obj)");
+    objParser.parseOBJFile(R"(C:\Users\kosti\CLionProjects\ServerOpenGLRenderer\assets\Bnuuy.obj)");
 
     std::vector<float> bVertices = objParser.getVertices();
 
@@ -67,15 +64,14 @@ int main() {
     DrawableObject obj2;
     obj2.SetVAO(vao1);
 
-    std::vector<glm::mat4> models = { obj.GetModel(), obj2.GetModel() };
+    eventHandler.AddEvent([&]{ return handler.isKeyPressed(GLFW_KEY_A);}, [&]() { camera.Move(glm::vec3(-0.1f * 0.05f, 0, 0)); });
+    eventHandler.AddEvent([&]{ return handler.isKeyPressed(GLFW_KEY_D);}, [&]() { camera.Move(glm::vec3(0.1f * 0.05f, 0, 0)); });
+
+    std::vector models = { obj.GetModel(), obj2.GetModel() };
     ShaderStorageBuffer modelBuffer(models);
     modelBuffer.BindBufferLayout(1);
 
     eventHandler.SetMovable(&camera);
-
-    renderer.AddDrawable(&obj);
-    renderer.AddDrawable(&obj2);
-    obj.Scale(0.01f);
 
     vec3 lightPos = vec3(0.0f, 0.3f, 0.3f);
     int iter = 0;

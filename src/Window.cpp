@@ -18,9 +18,14 @@ Window::~Window() {
     glfwDestroyWindow(_window);
 }
 
-void Window::Open() const {
+void Window::Open() {
     glfwMakeContextCurrent(_window);
     InitRender();
+    while (!_shouldClose) Update();
+}
+
+void Window::Close() {
+    _shouldClose = true;
 }
 
 void Window::ClearScreen() const {
@@ -29,6 +34,16 @@ void Window::ClearScreen() const {
 }
 
 void Window::Update() {
+    const auto currentTime = std::chrono::high_resolution_clock::now();
+
+    if (_firstFrame) _firstFrame = false;
+    else {
+        const size_t timeDiff = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - _previousTime).count();
+        _delta = static_cast<float>(timeDiff) / 1000.0f;
+    }
+
+    _previousTime = currentTime;
+    for (auto& registry : _registries) registry.Update(_delta);
     glfwSwapBuffers(_window);
     if (glfwWindowShouldClose(_window)) ShouldClose = true;
 }
@@ -63,4 +78,8 @@ void Window::SwitchCursorMode() {
 
 bool Window::IsCursorVisible() const {
     return _cursorVisible;
+}
+
+Window & Window::AddUpdatable(Updatable &updatable) {
+    return *this;
 }

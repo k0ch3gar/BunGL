@@ -13,7 +13,14 @@ add_library(bunGL ${bunGL_src}
         Buffers/TextureData.h
         Properties/Illuminant.cpp
         Properties/Illuminant.h
-        IUpdate.h)
+        Updatable.h
+        Events/EventMediator.cpp
+        Events/EventMediator.h
+        Events/IMediator.h
+        Notifications/Notifiable.cpp
+        Notifications/Notifiable.h
+        Properties/Light/Indirectional.cpp
+        Properties/Light/Indirectional.h)
 
 target_include_directories(bunGL
         PRIVATE .

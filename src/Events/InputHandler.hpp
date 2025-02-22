@@ -6,7 +6,9 @@
 #include <glm/glm.hpp>
 #include <unordered_map>
 
-class InputHandler {
+#include "Updatable.h"
+
+class InputHandler : Updatable {
 public:
     InputHandler(GLFWwindow* window)
         : _window(window),
@@ -37,7 +39,8 @@ public:
         _previousMouseButtons = _mouseButtons;
     }
 
-    void update() {
+    void Update(double delta) override {
+        prepareForEvents();
         glfwPollEvents();
         _mouseOffset = _mousePos - _lastMousePos;
         _lastMousePos = _mousePos;
