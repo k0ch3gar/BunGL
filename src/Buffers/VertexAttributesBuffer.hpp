@@ -9,16 +9,14 @@
 
 class VertexAttributesBuffer {
     uint32_t _vao{};
-    ArrayBuffer* _arrayBuffer;
-    ElementBuffer* _elementBuffer;
     size_t _elementsCount = 0;
 
 
-    void Bind() {
+    void Bind() const {
         glad_glBindVertexArray(_vao);
     }
 
-    void Unbind() {
+    static void Unbind() {
         glad_glBindVertexArray(0);
     }
 
@@ -58,7 +56,7 @@ public:
         return *this;
     }
 
-    void DrawTriangles() {
+    void DrawTriangles() const {
         Bind();
         glDrawElements(
                 GL_TRIANGLES,

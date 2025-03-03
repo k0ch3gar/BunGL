@@ -63,4 +63,7 @@ private:
     size_t _currentId = 0;
 };
 
+inline EventHandler::EventHandler() {
+}
+
 #endif //EVENTHANDLER_HPP

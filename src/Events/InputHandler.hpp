@@ -8,7 +8,7 @@
 
 #include "Updatable.h"
 
-class InputHandler : Updatable {
+class InputHandler : public Updatable {
 public:
     InputHandler(GLFWwindow* window)
         : _window(window),
@@ -96,15 +96,13 @@ public:
 
 private:
     static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-        InputHandler* handler = static_cast<InputHandler*>(glfwGetWindowUserPointer(window));
-        if(handler) {
+        if(auto* handler = static_cast<InputHandler*>(glfwGetWindowUserPointer(window))) {
             handler->_keys[key] = (action != GLFW_RELEASE);
         }
     }
 
     static void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
-        InputHandler* handler = static_cast<InputHandler*>(glfwGetWindowUserPointer(window));
-        if(handler) {
+        if(auto* handler = static_cast<InputHandler*>(glfwGetWindowUserPointer(window))) {
             handler->_mouseButtons[button] = (action != GLFW_RELEASE);
         }
     }
@@ -122,11 +120,11 @@ private:
     }
 
     static void framebufferSizeCallback(GLFWwindow* window, int width, int height) {
-        InputHandler* handler = static_cast<InputHandler*>(glfwGetWindowUserPointer(window));
-        if(handler) {
+        if(auto handler = static_cast<InputHandler*>(glfwGetWindowUserPointer(window))) {
             handler->_windowSize.x = width;
             handler->_windowSize.y = height;
             handler->_windowSizeChanged = true;
+            glViewport(0, 0, width, height);
         }
     }
 

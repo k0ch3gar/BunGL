@@ -1,12 +1,14 @@
 #ifndef ILLUMABLE_H
 #define ILLUMABLE_H
+#include "Buffers/ShaderStorageBuffer.hpp"
+#include "glm/vec3.hpp"
+#include "Light/Light.h"
 
 class Illuminant {
 public:
-    void Illuminate();
+    virtual ~Illuminant() = default;
 
-private:
-
+    virtual void Illuminate() = 0;
 };
 
 

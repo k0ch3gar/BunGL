@@ -1,27 +1,41 @@
 #ifndef SCENE_H
 #define SCENE_H
+#include <Camera.h>
 #include <vector>
 #include <Drawables/IDrawable.h>
+#include <Events/EventHandler.hpp>
 
 #include "Updatable.h"
+#include "Buffers/ShaderStorageBuffer.hpp"
 #include "Properties/Movable.h"
+#include "Properties/Light/Light.h"
+#include "Properties/Illuminant.h"
 
 
-class Scene : public IDrawable, public Updatable {
+class Scene : public Updatable {
 public:
-    Scene() = default;
+    Scene();
 
-    size_t AddDrawable(IDrawable* drawable);
+    ~Scene() override;
 
-    size_t AddMovable(Movable* movable);
+    size_t AddLight(const LightData& lightData);
 
-    void Draw() override;
+    void UpdateLight(size_t index, const LightData& lightData);
+
+    void RemoveLight(size_t index);
+
+    size_t AddUpdatable(Updatable* updatable);
 
     void Update(double delta) override;
 
 private:
-    std::vector<IDrawable *> _drawables;
-    std::vector<Movable *> _movables;
+    std::vector<Updatable*> _registries;
+
+    ShaderStorageBuffer<LightData> _lightSources;
+
+    Camera* _camera;
+
+    EventHandler* _eventHandler;
 };
 
 

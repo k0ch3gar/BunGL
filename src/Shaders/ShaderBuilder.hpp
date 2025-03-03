@@ -31,7 +31,7 @@ public:
     }
 
     ShaderProgram Build() {
-        for (const auto& [_, shader] : _shaders) glAttachShader(_shaderProgram, shader);
+        for (const auto &shader: _shaders | std::views::values) glAttachShader(_shaderProgram, shader);
         glLinkProgram(_shaderProgram);
 
         int success;

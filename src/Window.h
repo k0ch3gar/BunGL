@@ -6,20 +6,25 @@
 
 #include "Events/InputHandler.hpp"
 
-#include "Renderer.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 #include "Updatable.h"
+#include "Buffers/VertexAttributesBuffer.hpp"
 #include "glm/glm.hpp"
+#include "Shaders/IUniform.h"
 
-class Window {
+class Window : public IUniform {
 public:
     Window(int width, int height, const char *title, float fov);
 
-    ~Window();
+    ~Window() override;
+
+    void Uniform(int uniformPos) override;
 
     void Open();
+
+    void Join();
 
     void Close();
 
@@ -45,7 +50,7 @@ public:
 
     [[nodiscard]] bool IsCursorVisible() const;
 
-    Window& AddUpdatable(Updatable& updatable);
+    Window& AddUpdatable(Updatable* updatable);
 
 private:
     GLFWwindow* _window = nullptr;
@@ -53,7 +58,8 @@ private:
     glm::vec4 _clearColor{};
     glm::mat4 _projection{};
 
-    std::list<Updatable&> _registries;
+    std::list<Updatable*> _registries;
+    std::list<IUniform*> _uniforms;
 
     float _fov;
 
@@ -61,11 +67,9 @@ private:
     int _height;
 
     bool _cursorVisible = true;
-    bool _shouldClose = false;
     bool _firstFrame = true;
 
     double _delta = 0.0f;
-
     std::chrono::time_point<std::chrono::high_resolution_clock> _previousTime;
 };
 

@@ -19,8 +19,18 @@ add_library(bunGL ${bunGL_src}
         Events/IMediator.h
         Notifications/Notifiable.cpp
         Notifications/Notifiable.h
-        Properties/Light/Indirectional.cpp
-        Properties/Light/Indirectional.h)
+        Properties/Rotatable.h
+        Properties/Rotatable.cpp
+        Properties/Scalable.cpp
+        Properties/Scalable.h
+        Properties/Light/Light.h
+        Buffers/Storable.hpp
+        Scene/ShaderStorageHandler.cpp
+        Scene/ShaderStorageHandler.h
+        Properties/Drawable.cpp
+        Properties/Drawable.h
+        Shaders/IUniform.h
+)
 
 target_include_directories(bunGL
         PRIVATE .

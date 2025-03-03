@@ -4,28 +4,40 @@
 #include <LibFacade.hpp>
 
 #include "glm/ext/matrix_clip_space.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 Window::Window(int width, int height, const char *title, float fov) {
+    InitLib();
     _window = glfwCreateWindow(width, height, title, nullptr, nullptr);
     _clearColor = glm::vec4(0, 0, 0, 1);
     _width = width;
     _height = height;
     _fov = fov;
-    _projection = glm::perspective(fov, (float)width/(float)height, 0.01f, 100.0f);
+    _projection = glm::perspective(fov, (float) width / (float) height, 0.01f, 100.0f);
 }
 
 Window::~Window() {
     glfwDestroyWindow(_window);
 }
 
+void Window::Uniform(const int uniformPos) {
+    glUniformMatrix4fv(uniformPos, 1, GL_FALSE, glm::value_ptr(_projection));
+}
+
 void Window::Open() {
     glfwMakeContextCurrent(_window);
     InitRender();
-    while (!_shouldClose) Update();
+    glViewport(0, 0, _width, _height);
+}
+
+void Window::Join() {
+    while (!ShouldClose) {
+        Update();
+    }
 }
 
 void Window::Close() {
-    _shouldClose = true;
+    ShouldClose = true;
 }
 
 void Window::ClearScreen() const {
@@ -35,6 +47,7 @@ void Window::ClearScreen() const {
 
 void Window::Update() {
     const auto currentTime = std::chrono::high_resolution_clock::now();
+    ClearScreen();
 
     if (_firstFrame) _firstFrame = false;
     else {
@@ -43,9 +56,9 @@ void Window::Update() {
     }
 
     _previousTime = currentTime;
-    for (auto& registry : _registries) registry.Update(_delta);
-    glfwSwapBuffers(_window);
+    for (auto& registry : _registries) registry->Update(_delta);
     if (glfwWindowShouldClose(_window)) ShouldClose = true;
+    glfwSwapBuffers(_window);
 }
 
 InputHandler Window::InitWindowInputHandler() {
@@ -80,6 +93,8 @@ bool Window::IsCursorVisible() const {
     return _cursorVisible;
 }
 
-Window & Window::AddUpdatable(Updatable &updatable) {
+Window & Window::AddUpdatable(Updatable *updatable) {
+    _registries.emplace_back(updatable);
     return *this;
 }
+

@@ -5,8 +5,12 @@
 #include <fstream>
 #include <iostream>
 #include <glad/glad.h>
+#include <Utils/ObjParser.hpp>
 
+#include "../assets/testTriangle.h"
+#include "Buffers/VAOBuilder.hpp"
 #include "GLFW/glfw3.h"
+#include "Properties/Drawable.h"
 
 inline bool InitLib() {
     if (!glfwInit()) {
@@ -26,9 +30,6 @@ inline bool InitRender() {
         return false;
     }
 
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-
     return true;
 }
 
@@ -42,18 +43,20 @@ void parseData(const char* pathToFile, std::vector<T>& vec) {
 }
 
 namespace bunGL {
-    inline Window* window = nullptr;
+    inline Drawable MakeDrawableFromObj(const char* pathToObj, int verticesLayout) {
+        ObjParser parser;
+        parser.parseOBJFile(pathToObj);
 
-    void InitWindow(int width, int height, const char *title, float fov) {
-        window = new Window(width, height, title, fov);
+        ArrayBuffer vertices(parser.getVertices());
+        ElementBuffer faces(parser.getFaces());
+        VertexAttributesBuffer vao;
+        vao.AddAttribute(verticesLayout, &vertices, 3);
+        vao.AddElementBuffer(&faces);
+
+        Drawable result(vao);
+        return result;
     }
 
-    void RegisterBasicCamera() {
-    }
-
-    void RegisterObject() {
-
-    }
 }
 
 #endif //LIBFACADE_HPP
