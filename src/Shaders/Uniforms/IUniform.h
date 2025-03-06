@@ -1,6 +1,8 @@
 #ifndef IUNIFORM_H
 #define IUNIFORM_H
 
+class ShaderProgram;
+
 class IUniform {
 public:
     virtual ~IUniform() = default;

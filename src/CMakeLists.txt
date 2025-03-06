@@ -29,7 +29,11 @@ add_library(bunGL ${bunGL_src}
         Scene/ShaderStorageHandler.h
         Properties/Drawable.cpp
         Properties/Drawable.h
-        Shaders/IUniform.h
+        Shaders/Uniforms/IUniform.h
+        Shaders/Uniforms/Uniformable.hpp
+        Shaders/Uniforms/Mat4Uniformable.hpp
+        Shaders/Uniforms/Vec3Uniformable.hpp
+        Shaders/Uniforms/UniformManager.hpp
 )
 
 target_include_directories(bunGL

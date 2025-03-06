@@ -4,26 +4,28 @@
 
 #include "Movable.h"
 #include "Rotatable.h"
+#include "Scalable.h"
 #include "Updatable.h"
 #include "Buffers/VertexAttributesBuffer.hpp"
-#include "Shaders/IUniform.h"
 #include "glm/glm.hpp"
+#include "Shaders/Uniforms/UniformManager.hpp"
 
 
-class Drawable : public Updatable, public IUniform, public Rotatable {
+class Drawable : public Updatable, public UniformManager, public Rotatable, public Scalable {
 public:
     ~Drawable() override;
 
     explicit Drawable(VertexAttributesBuffer vao);
 
-    virtual void Draw();
+    void RegisterUniforms(ShaderProgram *shader) override;
 
-    void Uniform(int uniformPos) override;
+    virtual void Draw();
 
     void Update(double delta) override;
 
 private:
     VertexAttributesBuffer _vertexAttributes;
+    glm::mat4 _modelMatrix = glm::mat4(1.0f);
 };
 
 

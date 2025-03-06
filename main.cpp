@@ -113,6 +113,7 @@ int main() {
     ShaderProgram shader =
             shaderBuilder
             .AttachVertexShader(vertexShaderSource)
+            .AttachGeometryShader(geometryShaderSource)
             .AttachFragmentShader(fragmentShaderSource)
             .Build();
 
@@ -120,16 +121,23 @@ int main() {
 
 
     Drawable obj = bunGL::MakeDrawableFromObj(R"(C:\Users\kosti\CLionProjects\ServerOpenGLRenderer\assets\bnuuy.obj)" , 0);
+    Drawable obj2 = bunGL::MakeDrawableFromObj(R"(C:\Users\kosti\CLionProjects\ServerOpenGLRenderer\assets\Glaceon.obj)" , 0);
+    Drawable obj3 = bunGL::MakeDrawableFromObj(R"(C:\Users\kosti\CLionProjects\ServerOpenGLRenderer\assets\floor.obj)" , 0);
     Camera camera;
+    obj2.Scale(0.01f);
 
-    shader.AddUniform("v", &camera);
-    shader.AddUniform("p", &window);
-    shader.AddUniform("model", &obj);
+    camera.RegisterUniforms(&shader);
+    window.RegisterUniforms(&shader);
+    obj.RegisterUniforms(&shader);
+    obj2.RegisterUniforms(&shader);
+    obj3.RegisterUniforms(&shader);
 
     Scene scene;
     scene.AddUpdatable(&eventHandler);
     scene.AddUpdatable(&camera);
     scene.AddUpdatable(&obj);
+    scene.AddUpdatable(&obj2);
+    scene.AddUpdatable(&obj3);
 
     window.AddUpdatable(&inputHandler);
     window.AddUpdatable(&shader);
@@ -139,6 +147,10 @@ int main() {
     eventHandler.AddEvent([&](){return inputHandler.isKeyPressed(GLFW_KEY_D);}, [&](){camera.Move(vec3(1,0,0));});
     eventHandler.AddEvent([&](){return inputHandler.isKeyPressed(GLFW_KEY_W);}, [&](){camera.Move(vec3(0,0,-1));});
     eventHandler.AddEvent([&](){return inputHandler.isKeyPressed(GLFW_KEY_S);}, [&](){camera.Move(vec3(0,0,1));});
+    eventHandler.AddEvent([&](){return inputHandler.isKeyPressed(GLFW_KEY_SPACE);}, [&](){camera.Move(vec3(0,1,0));});
+    eventHandler.AddEvent([&](){return inputHandler.isKeyPressed(GLFW_KEY_LEFT_SHIFT);}, [&](){camera.Move(vec3(0,-1,0));});
+    eventHandler.AddEvent([&](){return inputHandler.isMouseButtonJustPressed(GLFW_MOUSE_BUTTON_LEFT);}, [&](){window.SwitchCursorMode();});
+
 
 
     window.Join();

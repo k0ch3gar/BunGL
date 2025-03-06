@@ -1,12 +1,14 @@
 #ifndef CAMERA_H
 #define CAMERA_H
+
 #include "Updatable.h"
 #include "Properties/Movable.h"
 #include "glm/glm.hpp"
 #include "Properties/Rotatable.h"
-#include "Shaders/IUniform.h"
+#include "Shaders/Uniforms/IUniform.h"
+#include "Shaders/Uniforms/UniformManager.hpp"
 
-class Camera : public Movable, public Rotatable, public IUniform, public Updatable {
+class Camera : public Movable, public Rotatable, public UniformManager, public Updatable {
 public:
    explicit Camera(
       glm::vec3 position = glm::vec3(0, 0, 0),
@@ -15,7 +17,9 @@ public:
 
    void Update(double delta) override;
 
-   [[nodiscard]] glm::mat4 GetViewMatrix();
+   void RegisterUniforms(ShaderProgram *shader) override;
+
+   [[nodiscard]] glm::mat4 GetViewMatrix() const;
 
    Camera& Move(glm::vec3 diff) override;
 
@@ -23,12 +27,12 @@ public:
 
    Camera& RotateY(float yDegree) override;
 
-   void Uniform(int uniformPos) override;
-
 private:
    glm::vec3 _up{};
    glm::vec3  _right{};
    glm::vec3 _direction{};
+
+   glm::mat4 _view{};
 
    float pitch;
 };

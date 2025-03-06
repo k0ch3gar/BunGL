@@ -10,6 +10,8 @@
 
 #include "glm/ext/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
+#include "Shaders/Uniforms/Mat4Uniformable.hpp"
+#include "Shaders/Uniforms/Vec3Uniformable.hpp"
 
 
 Camera::Camera(glm::vec3 position, glm::vec3 up, glm::vec3 direction) {
@@ -19,14 +21,21 @@ Camera::Camera(glm::vec3 position, glm::vec3 up, glm::vec3 direction) {
     _right = glm::cross(_direction, up);
 
     pitch = 0;
+    _view = glm::lookAt(pos, pos + _direction, up);
 }
 
 void Camera::Update(double delta) {
-    // Move(glm::vec3(0,0,0.005f));
+    _view = glm::lookAt(pos, pos + _direction, _up);
+    Uniform();
 }
 
-glm::mat4 Camera::GetViewMatrix() {
-    return glm::lookAt(pos, pos + _direction, _up);
+void Camera::RegisterUniforms(ShaderProgram *shader) {
+    AddUniform(shader->GetUniform("v"), new Mat4Uniformable(&_view));
+    AddUniform(shader->GetUniform("cameraNormal"), new Vec3Uniformable(&_direction));
+}
+
+glm::mat4 Camera::GetViewMatrix() const {
+    return _view;
 }
 
 Camera& Camera::Move(glm::vec3 diff) {
@@ -41,10 +50,6 @@ Camera& Camera::RotateY(float yDegree) {
     _direction = normalize(rot * glm::vec4(0, 0, -1, 0));
     _right = normalize(rot * glm::vec4(1, 0, 0, 0));
     return *this;
-}
-
-void Camera::Uniform(int uniformPos) {
-    glUniformMatrix4fv(uniformPos, 1, GL_FALSE, glm::value_ptr(GetViewMatrix()));
 }
 
 Camera& Camera::RotateX(float xDegree) {

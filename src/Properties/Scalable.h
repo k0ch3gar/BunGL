@@ -9,7 +9,7 @@ public:
 
     virtual Scalable& Scale(float size);
 
-private:
+protected:
     glm::mat4 scale = glm::mat4(1.0f);
 };
 

@@ -8,8 +8,8 @@
 #include "ShaderProcessor.hpp"
 #include <glad/glad.h>
 
-#include "IUniform.h"
 #include "glm/gtc/type_ptr.hpp"
+#include "Uniforms/IUniform.h"
 
 class ShaderProgram : public Updatable {
 public:

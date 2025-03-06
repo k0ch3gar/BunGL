@@ -5,6 +5,7 @@
 
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/gtc/type_ptr.hpp"
+#include "Shaders/Uniforms/Mat4Uniformable.hpp"
 
 Window::Window(int width, int height, const char *title, float fov) {
     InitLib();
@@ -20,8 +21,8 @@ Window::~Window() {
     glfwDestroyWindow(_window);
 }
 
-void Window::Uniform(const int uniformPos) {
-    glUniformMatrix4fv(uniformPos, 1, GL_FALSE, glm::value_ptr(_projection));
+void Window::RegisterUniforms(ShaderProgram *shader) {
+    AddUniform(shader->GetUniform("p"), new Mat4Uniformable(&_projection));
 }
 
 void Window::Open() {
@@ -48,6 +49,7 @@ void Window::ClearScreen() const {
 void Window::Update() {
     const auto currentTime = std::chrono::high_resolution_clock::now();
     ClearScreen();
+    Uniform();
 
     if (_firstFrame) _firstFrame = false;
     else {

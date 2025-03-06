@@ -12,15 +12,15 @@
 #include "Updatable.h"
 #include "Buffers/VertexAttributesBuffer.hpp"
 #include "glm/glm.hpp"
-#include "Shaders/IUniform.h"
+#include "Shaders/Uniforms/UniformManager.hpp"
 
-class Window : public IUniform {
+class Window : public UniformManager {
 public:
     Window(int width, int height, const char *title, float fov);
 
-    ~Window() override;
+    ~Window();
 
-    void Uniform(int uniformPos) override;
+    void RegisterUniforms(ShaderProgram *shader) override;
 
     void Open();
 
