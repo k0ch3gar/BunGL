@@ -5,6 +5,7 @@
 
 #include "glm/ext/matrix_clip_space.hpp"
 #include "glm/gtc/type_ptr.hpp"
+#include "Shaders/Uniforms/IntUniformable.hpp"
 #include "Shaders/Uniforms/Mat4Uniformable.hpp"
 
 Window::Window(int width, int height, const char *title, float fov) {
@@ -23,6 +24,8 @@ Window::~Window() {
 
 void Window::RegisterUniforms(ShaderProgram *shader) {
     AddUniform(shader->GetUniform("p"), new Mat4Uniformable(&_projection));
+    AddUniform(shader->GetUniform("width"), new IntUniformable(&_width));
+    AddUniform(shader->GetUniform("height"), new IntUniformable(&_height));
 }
 
 void Window::Open() {

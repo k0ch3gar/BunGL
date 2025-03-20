@@ -124,7 +124,6 @@ private:
             handler->_windowSize.x = width;
             handler->_windowSize.y = height;
             handler->_windowSizeChanged = true;
-            glViewport(0, 0, width, height);
         }
     }
 

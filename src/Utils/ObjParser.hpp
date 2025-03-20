@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+#include "Buffers/VertexAttributesBuffer.hpp"
 #include "glm/vec3.hpp"
 
 class ObjParser {
@@ -63,6 +64,8 @@ public:
 private:
     std::vector<float> _vertices;
     std::vector<unsigned int> _faces;
+
+    VertexAttributesBuffer _vao;
 };
 
 #endif //OBJPARSER_HPP

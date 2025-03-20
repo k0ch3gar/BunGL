@@ -46,7 +46,7 @@ public:
         glBindBuffer(BufferType, 0);
     }
 
-    template<GLenum drawingType> requires drawType<drawingType>
+    template<GLenum drawingType>
     void Fill(std::vector<T>& data) {
         Bind();
         glBufferData(BufferType, data.size() * sizeof(T), data.data(), drawingType);

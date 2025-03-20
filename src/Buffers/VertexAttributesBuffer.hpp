@@ -2,28 +2,29 @@
 #define VERTEXARRAYBUFFER_HPP
 
 #include <cstdint>
+#include <Drawables/IDrawable.h>
 #include <glad/glad.h>
 
 #include "ArrayBuffer.hpp"
 #include "ElementBuffer.hpp"
 
-class VertexAttributesBuffer {
+class VertexAttributesBuffer : public IDrawable {
     uint32_t _vao{};
     size_t _elementsCount = 0;
 
 
     void Bind() const {
-        glad_glBindVertexArray(_vao);
+        glBindVertexArray(_vao);
     }
 
     static void Unbind() {
-        glad_glBindVertexArray(0);
+        glBindVertexArray(0);
     }
 
 public:
 
     VertexAttributesBuffer() {
-        glad_glGenVertexArrays(1, &_vao);
+        glGenVertexArrays(1, &_vao);
     }
 
     VertexAttributesBuffer& AddAttribute(int attributeIndex, ArrayBuffer* arrayBuffer, int size) {
@@ -56,7 +57,7 @@ public:
         return *this;
     }
 
-    void DrawTriangles() const {
+    void Draw() override {
         Bind();
         glDrawElements(
                 GL_TRIANGLES,

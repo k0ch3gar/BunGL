@@ -10,7 +10,7 @@
 #include "../assets/testTriangle.h"
 #include "Buffers/VAOBuilder.hpp"
 #include "GLFW/glfw3.h"
-#include "Properties/Drawable.h"
+#include "Properties/BasicSceneObject.h"
 
 inline bool InitLib() {
     if (!glfwInit()) {
@@ -31,6 +31,7 @@ inline bool InitRender() {
     }
 
     glEnable(GL_DEPTH_TEST);
+    // glEnable(GL_CULL_FACE);
 
     return true;
 }
@@ -45,18 +46,17 @@ void parseData(const char* pathToFile, std::vector<T>& vec) {
 }
 
 namespace bunGL {
-    inline Drawable MakeDrawableFromObj(const char* pathToObj, int verticesLayout) {
+    inline BasicSceneObject MakeDrawableFromObj(const char* pathToObj, int verticesLayout) {
         ObjParser parser;
         parser.parseOBJFile(pathToObj);
 
         ArrayBuffer vertices(parser.getVertices());
         ElementBuffer faces(parser.getFaces());
-        VertexAttributesBuffer vao;
-        vao.AddAttribute(verticesLayout, &vertices, 3);
-        vao.AddElementBuffer(&faces);
+        auto* vao = new VertexAttributesBuffer();
+        vao->AddAttribute(verticesLayout, &vertices, 3);
+        vao->AddElementBuffer(&faces);
 
-        Drawable result(vao);
-        return result;
+        return BasicSceneObject{vao};
     }
 
 }

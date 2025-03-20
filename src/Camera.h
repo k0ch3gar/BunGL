@@ -4,11 +4,13 @@
 #include "Updatable.h"
 #include "Properties/Movable.h"
 #include "glm/glm.hpp"
+#include "Properties/Attachable.h"
+#include "Properties/IAttachable.h"
 #include "Properties/Rotatable.h"
 #include "Shaders/Uniforms/IUniform.h"
 #include "Shaders/Uniforms/UniformManager.hpp"
 
-class Camera : public Movable, public Rotatable, public UniformManager, public Updatable {
+class Camera : public Movable, public Rotatable, public UniformManager, public Updatable, public IAttachable {
 public:
    explicit Camera(
       glm::vec3 position = glm::vec3(0, 0, 0),
@@ -20,12 +22,19 @@ public:
    void RegisterUniforms(ShaderProgram *shader) override;
 
    [[nodiscard]] glm::mat4 GetViewMatrix() const;
+   glm::vec3 GetDirection() const;
 
    Camera& Move(glm::vec3 diff) override;
 
    Camera& RotateX(float xDegree) override;
 
    Camera& RotateY(float yDegree) override;
+
+   size_t AttachMovable(Movable *attachable) override;
+
+   size_t AttachRotatable(Rotatable *attachable) override;
+
+   size_t AttachScalable(Scalable *attachable) override;
 
 private:
    glm::vec3 _up{};
@@ -34,7 +43,9 @@ private:
 
    glm::mat4 _view{};
 
-   float pitch;
+   float _pitch;
+
+   Attachable _attachable;
 };
 
 

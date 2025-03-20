@@ -3,6 +3,7 @@
 #include <loader.hpp>
 
 #include "Buffer.hpp"
+#include "Utils/TextureData.h"
 
 template<GLenum TextureType>
 class TextureBuffer {
@@ -20,17 +21,17 @@ public:
         glGenTextures(1, &_texture);
     }
 
-    TextureBuffer& SetTextureData2D(const stbl::ImageData& imageData) {
+    TextureBuffer& SetTextureData2D(const bunGL::TextureData & textureData) {
         Bind();
         glTexImage2D(TextureType,
             0,
-            imageData.format,
-            imageData.width,
-            imageData.height,
+            textureData.internalFormat,
+            textureData.width,
+            textureData.height,
             0,
-            imageData.format,
+            textureData.format,
             GL_UNSIGNED_BYTE,
-            imageData.image);
+            textureData.data);
         Unbind();
         return *this;
     }
